@@ -6,7 +6,7 @@ namespace BaseAPI.Domain.Infra.Settings
 {
     public class SendGridSettings
     {
-        public string ChaveSendGrid { get; set; }
-        public string Remetente { get; set; }
+        public string? ChaveSendGrid { get; set; }
+        public string? Remetente { get; set; }
     }
 }

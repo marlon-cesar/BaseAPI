@@ -16,7 +16,10 @@ namespace  BaseAPI.Domain.Services
 
         public async Task<Usuario> AutenticarUsuario(string email, string senha) => 
             await this._repository.FirstOrDefaultAsync(u => u.Email.Equals(email) && !string.IsNullOrEmpty(senha) && u.Senha.Equals(senha.ToMD5()));
-       
+
+        public async Task<Usuario> GetUsuarioByEmail(string email) => 
+            await this._repository.FirstOrDefaultAsync(u => u.Email.Equals(email));
+
 
     }
 }

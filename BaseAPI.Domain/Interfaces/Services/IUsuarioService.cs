@@ -7,5 +7,7 @@ namespace  BaseAPI.Domain.Interfaces.Services
     {
         Task<Usuario> AutenticarUsuario(string email, string senha);
 
+        Task<Usuario> GetUsuarioByEmail(string email);
+
     }
 }

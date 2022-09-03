@@ -5,10 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace BaseAPI.API.Controllers
 {
     [ApiController]
-    [BearerAuthorize("Candidato")]
+    [BearerAuthorize("User, Admin")]
     [Route("api/[controller]")]
     public class PokedexController : AuthenticatedController
     {
-        
+        [HttpGet]
+        public IActionResult Teste()
+        {
+            return Ok("Oi");
+        }
     }
 }
