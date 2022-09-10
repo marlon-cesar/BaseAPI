@@ -25,7 +25,7 @@ namespace BaseAPI.API
                 .AddDistributedMemoryCache()
                 .AddScopedByBaseType(typeof(ServiceBase))
                 .AddScopedByBaseType(typeof(RepositoryBase))
-                .AddControllers();
+                .AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
