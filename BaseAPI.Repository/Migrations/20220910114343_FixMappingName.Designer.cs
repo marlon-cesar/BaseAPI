@@ -4,6 +4,7 @@ using BaseAPI.Repository.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaseAPI.Repository.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220910114343_FixMappingName")]
+    partial class FixMappingName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,6 +80,33 @@ namespace BaseAPI.Repository.Migrations
                     b.ToTable("PokemonType");
                 });
 
+            modelBuilder.Entity("BaseAPI.Domain.Models.PokemonTypeMapping", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DataAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PokemonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PokemonTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PokemonId");
+
+                    b.HasIndex("PokemonTypeId");
+
+                    b.ToTable("PokemonTypeMapping");
+                });
+
             modelBuilder.Entity("BaseAPI.Domain.Models.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
@@ -126,6 +155,25 @@ namespace BaseAPI.Repository.Migrations
                     b.HasIndex("TypesId");
 
                     b.ToTable("PokemonPokemonType");
+                });
+
+            modelBuilder.Entity("BaseAPI.Domain.Models.PokemonTypeMapping", b =>
+                {
+                    b.HasOne("BaseAPI.Domain.Models.Pokemon", "Pokemon")
+                        .WithMany()
+                        .HasForeignKey("PokemonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BaseAPI.Domain.Models.PokemonType", "PokemonType")
+                        .WithMany()
+                        .HasForeignKey("PokemonTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pokemon");
+
+                    b.Navigation("PokemonType");
                 });
 
             modelBuilder.Entity("PokemonPokemonType", b =>

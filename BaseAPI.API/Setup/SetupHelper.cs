@@ -93,11 +93,6 @@ namespace BaseAPI.API.Setup
 
         #endregion
 
-        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
-        {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            return services;
-        }
 
 
         public static IServiceCollection AddHttpContextAcessor(this IServiceCollection services)
@@ -123,10 +118,14 @@ namespace BaseAPI.API.Setup
 
         public static IServiceCollection AddScopedByBaseType(this IServiceCollection services, Type baseType)
         {
-            Assembly
+            var assemblies = Assembly
                 .GetAssembly(baseType)
-                .GetTypesOf(baseType)
-                .ForEach(type => services.AddScoped(type.GetInterface($"I{type.Name}"), type));
+                .GetTypesOf(baseType);
+
+            foreach (var type in assemblies)
+            {
+                services.AddScoped(type.GetInterface($"I{type.Name}"), type);
+            }
 
             return services;
         }

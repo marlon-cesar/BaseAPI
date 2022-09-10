@@ -4,6 +4,7 @@ using BaseAPI.Repository.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaseAPI.Repository.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220910114014_Pokemons")]
+    partial class Pokemons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +75,12 @@ namespace BaseAPI.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PokemonId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PokemonId");
 
                     b.ToTable("PokemonType");
                 });
@@ -113,34 +120,16 @@ namespace BaseAPI.Repository.Migrations
                     b.ToTable("Usuario");
                 });
 
-            modelBuilder.Entity("PokemonPokemonType", b =>
-                {
-                    b.Property<Guid>("PokemonsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TypesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PokemonsId", "TypesId");
-
-                    b.HasIndex("TypesId");
-
-                    b.ToTable("PokemonPokemonType");
-                });
-
-            modelBuilder.Entity("PokemonPokemonType", b =>
+            modelBuilder.Entity("BaseAPI.Domain.Models.PokemonType", b =>
                 {
                     b.HasOne("BaseAPI.Domain.Models.Pokemon", null)
-                        .WithMany()
-                        .HasForeignKey("PokemonsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Types")
+                        .HasForeignKey("PokemonId");
+                });
 
-                    b.HasOne("BaseAPI.Domain.Models.PokemonType", null)
-                        .WithMany()
-                        .HasForeignKey("TypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("BaseAPI.Domain.Models.Pokemon", b =>
+                {
+                    b.Navigation("Types");
                 });
 #pragma warning restore 612, 618
         }
