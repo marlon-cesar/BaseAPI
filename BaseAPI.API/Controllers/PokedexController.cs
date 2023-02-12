@@ -28,8 +28,8 @@ namespace BaseAPI.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> GetPokemonByName(string expression = null) =>
-             Ok(await _pokedexService.GetByName(expression));
+        [HttpGet("{page}")]
+        public async Task<IActionResult> GetPokemonByName(int page, string expression = null) =>
+             Ok(await _pokedexService.GetByName(page, expression));
     }
 }

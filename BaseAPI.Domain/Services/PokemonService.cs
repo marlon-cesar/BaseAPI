@@ -1,7 +1,9 @@
-﻿using BaseAPI.Domain.DTO;
+﻿using BaseAPI.Domain.Constants;
+using BaseAPI.Domain.DTO;
 using BaseAPI.Domain.Interfaces.Repositories;
 using BaseAPI.Domain.Interfaces.Services;
 using BaseAPI.Domain.Models;
+using BaseAPI.Domain.Models.Common;
 using BaseAPI.Domain.Services.Common;
 using Newtonsoft.Json;
 using System.Net;
@@ -116,9 +118,11 @@ namespace BaseAPI.Domain.Services
             }
         }
 
-        public async Task<IEnumerable<PokemonDTO>> GetByName(string name) =>
-            this.Query(p => string.IsNullOrEmpty(name) || p.Name.ToLower().Contains(name.ToLower()))
+        public async Task<PagedResult<PokemonDTO>> GetByName(int page, string expression = null) =>
+            await this._repository.Page(
+                this.Query(p => string.IsNullOrEmpty(expression) || p.Name.ToLower().Contains(expression.ToLower()) ||
+                p.Order.ToString().Contains(expression.ToLower()))
             .OrderBy(p => p.Order)
-            .Select(p => new PokemonDTO(p));
+            .Select(p => new PokemonDTO(p)), page == 0 ? 1 : page, GlobalConstants.DefaultPageSize);
     }
 }
