@@ -8,6 +8,8 @@ namespace BaseAPI.API
         {
             CreateHostBuilder(args).Build().Run();
         }
+
+
         public static IWebHostBuilder CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
