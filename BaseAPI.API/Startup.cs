@@ -20,7 +20,7 @@ namespace BaseAPI.API
                 .AddSingleton(this.AppSettings)
                 .AddSwagger()
                 .AddJwtAuth(this.AppSettings)
-                .AddSqlServerContexts(this.AppSettings)
+                .AddPostgreSqlContexts(this.AppSettings)
                 .AddHttpContextAcessor()
                 .AddDistributedMemoryCache()
                 .AddScopedByBaseType(typeof(ServiceBase))

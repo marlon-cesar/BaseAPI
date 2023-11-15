@@ -71,13 +71,13 @@ namespace BaseAPI.API.Setup
         #endregion
 
         #region Database
-        public static IServiceCollection AddSqlServerContexts(this IServiceCollection services, AppSettings settings)
+        public static IServiceCollection AddPostgreSqlContexts(this IServiceCollection services, AppSettings settings)
         {
             var connectionString = settings.ConnectionStrings.MainDbConnection;
 
             services.AddDbContext<MainDbContext>(options =>
                 options.UseLazyLoadingProxies()
-                .UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure())
+                .UseNpgsql(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure())
                 );
 
             return services;
